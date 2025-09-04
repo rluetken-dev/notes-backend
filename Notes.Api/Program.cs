@@ -1,0 +1,61 @@
+// Program.cs (top of file)
+// Purpose: Configure services (DI) and HTTP request pipeline (middleware) for the API.
+using Microsoft.EntityFrameworkCore;     // EF Core provider APIs
+using Notes.Api.Data;                    // Our AppDb DbContext
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Register the EF Core DbContext. It tells EF to use SQLite and pull the connection string
+// named "Default" from appsettings.json.
+builder.Services.AddDbContext<AppDb>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    // Swagger/OpenAPI UI is only exposed in Development by default.
+    app.MapControllers();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+// Map attribute-routed controllers (e.g., [Route("api/[controller]")]).
+app.MapControllers();
+
+// Optional: Redirect the root "/" to Swagger UI for convenience.
+app.MapGet("/", () => Results.Redirect("/swagger"));
+
+var summaries = new[]
+{
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+};
+
+app.MapGet("/weatherforecast", () =>
+{
+    var forecast =  Enumerable.Range(1, 5).Select(index =>
+        new WeatherForecast
+        (
+            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Random.Shared.Next(-20, 55),
+            summaries[Random.Shared.Next(summaries.Length)]
+        ))
+        .ToArray();
+    return forecast;
+})
+.WithName("GetWeatherForecast")
+.WithOpenApi();
+
+app.Run();
+
+record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+{
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
