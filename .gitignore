@@ -3,7 +3,7 @@ bin/
 obj/
 out/
 
-# IDE/Editor
+# IDE/Editor (lokale Settings)
 .vs/
 *.suo
 *.user
@@ -12,7 +12,7 @@ out/
 # Logs
 *.log
 
-# Local dev database (schema comes from migrations)
+# Local dev database (schema via EF migrations)
 notes.db
 
 # OS junk
