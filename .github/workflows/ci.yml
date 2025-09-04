@@ -1,0 +1,27 @@
+﻿name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+          cache: true
+
+      - name: Restore
+        working-directory: ./Notes.Api
+        run: dotnet restore
+
+      - name: Build (Release)
+        working-directory: ./Notes.Api
+        run: dotnet build --no-restore -c Release
