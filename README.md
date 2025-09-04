@@ -1,6 +1,5 @@
 ﻿# Notes Backend (.NET 8 + EF Core + SQLite)
 
+![CI](https://github.com/rluetken-dev/notes-backend/actions/workflows/ci.yml/badge.svg)
+
 Simple CRUD API for notes.
-- Swagger: /swagger
-- DB: SQLite file "notes.db"
-- Migrations tracked in source control
