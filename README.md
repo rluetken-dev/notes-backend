@@ -1,6 +1,7 @@
 ﻿# Notes Backend (.NET 8 + EF Core + SQLite)
 
 ![CI](https://github.com/rluetken-dev/notes-backend/actions/workflows/ci.yml/badge.svg)
+![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)
 
 A simple CRUD REST API for managing notes.  
 Built with **.NET 8**, **Entity Framework Core**, and **SQLite** as part of my software engineering portfolio.
