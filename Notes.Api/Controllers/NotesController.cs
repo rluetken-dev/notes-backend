@@ -9,6 +9,7 @@ using Notes.Api.Models;
 using Microsoft.EntityFrameworkCore;    // for ToListAsync() and ordering
 using Microsoft.AspNetCore.Http;        // for StatusCodes in Swagger annotations
 using Notes.Api.Contracts;              // our DTOs
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Notes.Api.Controllers
 {
@@ -23,9 +24,22 @@ namespace Notes.Api.Controllers
 
         // DbContext is provided by ASP.NET Core dependency injection
         public NotesController(AppDb db) => _db = db;
-
-        // 201 Created with a Location header that points to GET /api/notes/{id}
-        // [ApiController] automatically validates the DTO based on data annotations.
+       
+        /// <summary>
+        /// Creates a new note.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/notes
+        ///     {
+        ///        "title": "Shopping",
+        ///        "content": "Milk, Bread, Eggs"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Returns the newly created note</response>
+        /// <response code="400">If the input is invalid</response>
         [ProducesResponseType(typeof(Note), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost] // => POST /api/notes
@@ -50,9 +64,17 @@ namespace Notes.Api.Controllers
             );
         }
 
-        // Returns a single note by its primary key.
-        // - Route constraint "{id:int}" ensures only integers match.
-        // - EF Core FindAsync(pk) is fastest for primary key lookups.
+        /// <summary>
+        /// Returns a single note by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/notes/1
+        ///
+        /// </remarks>
+        /// <response code="200">Returns the note with the specified ID</response>
+        /// <response code="404">If the note does not exist</response>
         [HttpGet("{id:int}")] // => GET /api/notes/123
         public async Task<ActionResult<Note>> GetById(int id)
         {
@@ -63,13 +85,32 @@ namespace Notes.Api.Controllers
             return Ok(note);       // 200 with the note as JSON
         }
 
-        // Returns notes with optional text filter, pagination, and sorting.
-        // Query params:
-        // - q: optional search term (case-insensitive contains on title/content)
-        // - page: 1-based page index (default 1)
-        // - pageSize: items per page (default 10; max 100)
-        // - sort: one of ["id","title","created","updated"] (default "updated")
-        // - dir:  one of ["asc","desc"] (default "desc")
+        /// <summary>
+        /// Returns a paginated list of notes, optionally filtered and sorted.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/notes?q=shopping&amp;page=1&amp;pageSize=5&amp;sort=title&amp;dir=asc
+        ///
+        /// Query parameters:
+        /// - q: optional search term (case-insensitive, matches title or content)
+        /// - page: 1-based page index (default = 1)
+        /// - pageSize: number of items per page (default = 10, max = 100)
+        /// - sort: one of [id, title, created, updated] (default = updated)
+        /// - dir: sort direction, either asc or desc (default = desc)
+        ///
+        /// Response header:
+        /// - X-Total-Count: total number of matching notes (before paging)
+        /// </remarks>
+        /// <response code="200">Returns the list of notes</response>
+        /// <response code="400">If one of the query parameters is invalid</response>
+        [SwaggerOperation(
+            Summary = "Returns a paginated list of notes, optionally filtered and sorted.",
+            Description = "Supports q, page, pageSize, sort, dir. Response header X-Total-Count contains the total items."
+        )]
+        [ProducesResponseType(typeof(List<Note>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet] // => GET /api/notes?q=foo&page=1&pageSize=10&sort=title&dir=asc
         public async Task<ActionResult<List<Note>>> GetAll(
             [FromQuery] string? q,
@@ -147,7 +188,22 @@ namespace Notes.Api.Controllers
             return Ok(items);
         }
 
-        // 200 OK with the updated resource or 404 if the id is unknown.
+        /// <summary>
+        /// Updates an existing note by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/notes/1
+        ///     {
+        ///        "title": "Updated shopping list",
+        ///        "content": "Milk, Bread, Eggs, Butter"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Returns the updated note</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the note does not exist</response>
         [ProducesResponseType(typeof(Note), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -166,8 +222,20 @@ namespace Notes.Api.Controllers
             return Ok(note);
         }
 
-        // Deletes a note by id.
-        // Semantics: DELETE is idempotent (calling it twice for the same id should be safe).
+        /// <summary>
+        /// Deletes a note by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/notes/1
+        ///
+        /// Semantics:
+        /// - DELETE is idempotent, meaning calling it multiple times for the same ID
+        ///   will always have the same effect (the note is removed if it exists).
+        /// </remarks>
+        /// <response code="204">The note was successfully deleted</response>
+        /// <response code="404">If the note does not exist</response>
         [HttpDelete("{id:int}")] // => DELETE /api/notes/123
         public async Task<IActionResult> Delete(int id)
         {
