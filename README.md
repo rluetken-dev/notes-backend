@@ -9,7 +9,7 @@
   <img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg">
   <!-- Repo is private → static release badge for now -->
   <a href="https://github.com/rluetken-dev/notes-backend/releases">
-    <img alt="Release" src="https://img.shields.io/badge/release-v1.0.0-blue">
+    <img alt="Release" src="https://img.shields.io/badge/release-v1.0.1-blue">
   </a>
 </p>
 
