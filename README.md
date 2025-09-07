@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/rluetken-dev/notes-backend/actions/workflows/ci.yml/badge.svg)
 ![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)
+![.NET](https://img.shields.io/badge/.NET-8.0-purple)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
 A simple CRUD REST API for managing notes.  
 Built with **.NET 8**, **Entity Framework Core**, and **SQLite** as part of my software engineering portfolio.
@@ -33,6 +35,12 @@ dotnet run
 API will be available at:  
 👉 `http://localhost:5000/swagger` (Swagger UI)  
 👉 `http://localhost:5000/api/notes` (base endpoint)
+
+### Swagger Screenshot
+
+The interactive API documentation is available via Swagger:
+
+![Swagger UI](docs/swagger.png)
 
 ---
 
@@ -77,6 +85,18 @@ API will be available at:
 
 ---
 
+## 🗂️ Endpoints Overview
+
+| Method | Route             | Description        |
+|-------:|-------------------|--------------------|
+| GET    | `/api/notes`      | List all notes     |
+| GET    | `/api/notes/{id}` | Get note by ID     |
+| POST   | `/api/notes`      | Create a new note  |
+| PUT    | `/api/notes/{id}` | Update a note      |
+| DELETE | `/api/notes/{id}` | Delete a note      |
+
+---
+
 ## 🛠️ Tech Stack
 - C# / .NET 8 Web API
 - Entity Framework Core (Code-First, Migrations)
@@ -86,7 +106,31 @@ API will be available at:
 
 ---
 
+## 📂 Project Structure
+
+```
+notes-backend/
+├─ Notes.Api/        # ASP.NET Core project (controllers, models, DI, etc.)
+├─ docs/             # Documentation assets (e.g., swagger.png)
+└─ README.md
+```
+
+---
+
+## 💡 Development Tips
+- Run `dotnet restore` after cloning to fetch dependencies.
+- Keep XML doc comments tidy to improve Swagger output.
+- Run builds/tests locally before pushing (e.g., `dotnet build && dotnet test`) if you add tests.
+- If you change ports, update the URLs above (check `launchSettings.json`).
+
+---
+
 ## 📌 Next Steps
 - Add authentication (JWT)
 - Dockerize API
 - Deploy to Azure / AWS
+
+---
+
+## 📜 License
+This project is released under the **MIT License**.
