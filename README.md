@@ -7,9 +7,8 @@
   <img alt=".NET" src="https://img.shields.io/badge/.NET-8.0-purple">
   <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-green.svg">
   <img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg">
-  <!-- Repo is private → static release badge for now -->
   <a href="https://github.com/rluetken-dev/notes-backend/releases">
-    <img alt="Release" src="https://img.shields.io/badge/release-v1.0.1-blue">
+    <img alt="Release" src="https://img.shields.io/github/v/release/rluetken-dev/notes-backend?sort=semver&display_name=tag">
   </a>
 </p>
 
@@ -20,9 +19,9 @@ Pairs well with the optional frontend: **[notes-frontend](https://github.com/rlu
 ---
 
 ## Table of Contents
-
 - [Features](#features)
 - [Getting Started](#getting-started)
+- [Configuration](#configuration)
 - [Swagger Screenshot](#swagger-screenshot)
 - [API Overview](#api-overview)
 - [Endpoints Overview](#endpoints-overview)
@@ -36,12 +35,11 @@ Pairs well with the optional frontend: **[notes-frontend](https://github.com/rlu
 ---
 
 ## Features
-
 - CRUD endpoints for notes (`GET`, `POST`, `PUT`, `DELETE`)
 - Pagination, filtering (`q`), and sorting (`sort`, `dir`) for `GET /api/notes`
 - Swagger UI with XML comments (`<summary/>` on controllers/models)
 - EF Core with SQLite persistence (Code-First, Migrations)
-- GitHub Actions CI (build + tests + lint)
+- GitHub Actions CI (build + tests + format/lint)
 
 ---
 
@@ -49,13 +47,24 @@ Pairs well with the optional frontend: **[notes-frontend](https://github.com/rlu
 
 ### Prerequisites
 - [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
-- (optional) [SQLite CLI](https://www.sqlite.org/download.html) for inspecting the database
+- (optional) [SQLite CLI](https://www.sqlite.org/download.html)
 
 ### Run locally
 ```bash
 git clone https://github.com/rluetken-dev/notes-backend.git
-cd notes-backend/Notes.Api
-dotnet run
+cd notes-backend
+
+# Restore
+dotnet restore
+
+# (optional) EF tools, if noch nicht installiert
+dotnet tool install --global dotnet-ef
+
+# DB migrieren (legt SQLite-Datei an)
+dotnet ef database update --project Notes.Api
+
+# Start
+dotnet run --project Notes.Api
 ```
 
 API will be available at:  
@@ -64,8 +73,16 @@ API will be available at:
 
 ---
 
-## Swagger Screenshot
+## Configuration
 
+| Setting            | Env Var                     | Default                 | Notes                    |
+|-------------------:|-----------------------------|-------------------------|--------------------------|
+| Connection String  | `ConnectionStrings__Default`| `Data Source=notes.db`  | SQLite DB file path      |
+| ASP.NET URLs       | `ASPNETCORE_URLS`           | `http://localhost:5000` | Change port/host binding |
+
+---
+
+## Swagger Screenshot
 The interactive API documentation is available via Swagger:
 
 ![Swagger UI](docs/swagger.png)
@@ -76,7 +93,6 @@ The interactive API documentation is available via Swagger:
 
 ### Create Note
 `POST /api/notes`
-
 ```json
 {
   "title": "Shopping",
@@ -100,7 +116,6 @@ The interactive API documentation is available via Swagger:
 
 ### Update Note
 `PUT /api/notes/{id}`
-
 ```json
 {
   "title": "Updated shopping list",
@@ -115,18 +130,17 @@ The interactive API documentation is available via Swagger:
 
 ## Endpoints Overview
 
-| Method | Route             | Description        |
-|-------:|-------------------|--------------------|
-| GET    | `/api/notes`      | List all notes     |
-| GET    | `/api/notes/{id}` | Get note by ID     |
-| POST   | `/api/notes`      | Create a new note  |
-| PUT    | `/api/notes/{id}` | Update a note      |
-| DELETE | `/api/notes/{id}` | Delete a note      |
+| Method | Route             | Description       |
+|------: |-------------------|-------------------|
+| GET    | `/api/notes`      | List all notes    |
+| GET    | `/api/notes/{id}` | Get note by ID    |
+| POST   | `/api/notes`      | Create a new note |
+| PUT    | `/api/notes/{id}` | Update a note     |
+| DELETE | `/api/notes/{id}` | Delete a note     |
 
 ---
 
 ## Project Structure
-
 ```
 notes-backend/
 ├─ Notes.Api/         # ASP.NET Core project (controllers, models, DI, Swagger)
@@ -138,45 +152,34 @@ notes-backend/
 ---
 
 ## Commits & Releases
-
 This repo follows **Conventional Commits** and **SemVer**.
 
-- See **[commits.md](./commits.md)** for the rules, allowed types/scopes, and examples.
+- See **[commits.md](./commits.md)** for rules, allowed types/scopes, and examples.
 - Tag releases as `vX.Y.Z` and keep release notes concise (link the compare view).
-- Repo is currently private → README uses a **static release badge**.  
-  When you switch to public, you can use a dynamic one:
-  ```html
-  <a href="https://github.com/rluetken-dev/notes-backend/releases">
-    <img alt="Release" src="https://img.shields.io/github/v/release/rluetken-dev/notes-backend?sort=semver&display_name=tag">
-  </a>
-  ```
 
 ---
 
 ## Development Tips
-
-- Run `dotnet restore` after cloning to fetch dependencies.
-- Keep XML doc comments tidy to enrich Swagger output.
-- If you add tests, prefer `dotnet test -c Release` locally before pushing.
-- If you change ports, update the URLs above (see `launchSettings.json`).
+- `dotnet restore` nach dem Clonen.
+- `dotnet test -c Release` lokal, bevor du pushst.
+- `dotnet format --verify-no-changes` für konsistenten Stil.
+- Ports in `launchSettings.json` ↔ URLs in README synchron halten.
 
 ---
 
 ## Roadmap
-
 - Authentication (JWT)
 - Dockerize API
 - Deploy to Azure / AWS
+- Health endpoint (`/health`) + container healthcheck
 
 ---
 
 ## License
-
 MIT — feel free to use, learn, and extend.
 
 ---
 
 ## Related
-
 - Frontend: https://github.com/rluetken-dev/notes-frontend
 - Backend:  https://github.com/rluetken-dev/notes-backend
