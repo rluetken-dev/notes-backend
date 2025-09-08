@@ -28,13 +28,42 @@ builder.Services.AddSwaggerGen(c =>
     c.EnableAnnotations();
 });
 
+// ===== CORS configuration =====
+// CORS (Cross-Origin Resource Sharing) allows our backend to accept requests
+// from a different origin (e.g. our frontend running on another port).
+// Without this, the browser will block frontend → backend requests.
+var AllowFrontend = "_allowFrontend";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowFrontend, policy =>
+    {
+        policy
+            // List all frontend URLs that should be allowed to call this API.
+            // You can add or remove entries depending on how you start your frontend.
+            .WithOrigins(
+                "http://localhost:5173", // common for Vite
+                "http://localhost:5500", // common for VS Code Live Server
+                "http://127.0.0.1:5500", // Live Server alternative
+                "http://localhost:8000"  // simple Python/Node static server
+            )
+            .AllowAnyHeader() // allow all HTTP headers (e.g. Content-Type, Authorization)
+            .AllowAnyMethod(); // allow all HTTP methods (GET, POST, PUT, DELETE)
+    });
+});
+
 var app = builder.Build();
+
+// ===== Enable CORS middleware =====
+// Activates the CORS policy we registered above (AllowFrontend).
+// Place it early so all following endpoints inherit CORS behavior.
+app.UseCors(AllowFrontend);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     // Swagger/OpenAPI UI is only exposed in Development by default.
-    app.MapControllers();
+    app.MapControllers(); // (keine Sorge, lassen wir vorerst so)
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -66,6 +95,7 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 app.Run();
+
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
