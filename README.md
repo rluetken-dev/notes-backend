@@ -154,7 +154,7 @@ notes-backend/
 ## Commits & Releases
 This repo follows **Conventional Commits** and **SemVer**.
 
-- See **[commits.md](./commits.md)** for rules, allowed types/scopes, and examples.
+- See **[COMMITS.md](./COMMITS.md)** for rules, allowed types/scopes, and examples.
 - Tag releases as `vX.Y.Z` and keep release notes concise (link the compare view).
 
 ---
