@@ -8,7 +8,7 @@
   <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-green.svg">
   <img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg">
   <a href="https://github.com/rluetken-dev/notes-backend/releases">
-    <img alt="Release" src="https://img.shields.io/github/v/release/rluetken-dev/notes-backend?sort=semver&display_name=tag">
+    <img alt="Release" src="https://img.shields.io/badge/release-v1.0.2-blue">
   </a>
 </p>
 
