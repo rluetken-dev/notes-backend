@@ -57,10 +57,10 @@ cd notes-backend
 # Restore
 dotnet restore
 
-# (optional) EF tools, if noch nicht installiert
+# (optional) EF tools, if not installed yet
 dotnet tool install --global dotnet-ef
 
-# DB migrieren (legt SQLite-Datei an)
+# DB migrate (creates SQLite file)
 dotnet ef database update --project Notes.Api
 
 # Start
@@ -145,7 +145,7 @@ The interactive API documentation is available via Swagger:
 notes-backend/
 ├─ Notes.Api/         # ASP.NET Core project (controllers, models, DI, Swagger)
 ├─ docs/              # Documentation assets (e.g., swagger.png)
-├─ commits.md         # Conventional Commits guide (types, scopes, examples)
+├─ COMMITS.md         # Conventional Commits guide (types, scopes, examples)
 └─ README.md
 ```
 
@@ -160,10 +160,10 @@ This repo follows **Conventional Commits** and **SemVer**.
 ---
 
 ## Development Tips
-- `dotnet restore` nach dem Clonen.
-- `dotnet test -c Release` lokal, bevor du pushst.
-- `dotnet format --verify-no-changes` für konsistenten Stil.
-- Ports in `launchSettings.json` ↔ URLs in README synchron halten.
+- `dotnet restore` after cloning.
+- `dotnet test -c Release` locally before pushing.
+- `dotnet format --verify-no-changes` for consistent style.
+- Keep ports in `launchSettings.json` in sync with URLs in README.
 
 ---
 
