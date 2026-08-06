@@ -12,8 +12,10 @@ out/
 # Logs
 *.log
 
-# Local dev database (schema via EF migrations)
-notes.db
+# Local dev database files (schema via EF migrations)
+*.db
+*.db-shm
+*.db-wal
 
 # OS junk
 Thumbs.db

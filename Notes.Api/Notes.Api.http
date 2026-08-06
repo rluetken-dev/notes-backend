@@ -1,6 +1,33 @@
 @Notes.Api_HostAddress = http://localhost:5257
 
-GET {{Notes.Api_HostAddress}}/weatherforecast/
+GET {{Notes.Api_HostAddress}}/api/notes
 Accept: application/json
 
 ###
+
+POST {{Notes.Api_HostAddress}}/api/notes
+Content-Type: application/json
+
+{
+  "title": "Shopping",
+  "content": "Milk, Bread, Eggs"
+}
+
+###
+
+GET {{Notes.Api_HostAddress}}/api/notes/1
+Accept: application/json
+
+###
+
+PUT {{Notes.Api_HostAddress}}/api/notes/1
+Content-Type: application/json
+
+{
+  "title": "Updated shopping list",
+  "content": "Milk, Bread, Eggs, Butter"
+}
+
+###
+
+DELETE {{Notes.Api_HostAddress}}/api/notes/1

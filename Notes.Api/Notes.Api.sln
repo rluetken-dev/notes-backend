@@ -1,8 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.2.0
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12023.21 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Api", "Notes.Api.csproj", "{43879E9D-C556-03CE-6067-1562459570F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Api.Tests", "..\Notes.Api.Tests\Notes.Api.Tests.csproj", "{C0FA3E01-C5C2-4C94-CF4F-028127EF31E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,6 +16,10 @@ Global
 		{43879E9D-C556-03CE-6067-1562459570F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43879E9D-C556-03CE-6067-1562459570F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43879E9D-C556-03CE-6067-1562459570F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0FA3E01-C5C2-4C94-CF4F-028127EF31E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0FA3E01-C5C2-4C94-CF4F-028127EF31E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0FA3E01-C5C2-4C94-CF4F-028127EF31E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0FA3E01-C5C2-4C94-CF4F-028127EF31E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
